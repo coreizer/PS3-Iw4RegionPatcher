@@ -5,10 +5,36 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <RootNamespace>PS3_Iw4RegionPatcher</RootNamespace>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <StartupObject>PS3_Iw4RegionPatcher.App</StartupObject>
+    <Copyright>© coreizer 2022</Copyright>
+    <PackageIcon>icon-32x32.png</PackageIcon>
+    <RepositoryUrl>https://github.com/coreizer/PS3-Iw4RegionPatcher</RepositoryUrl>
+    <NeutralLanguage>ja-JP</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\icon-32x32.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Costura.Fody" Version="5.7.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Fody" Version="6.6.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="ReactiveUI" Version="18.2.5" />
+    <PackageReference Include="ReactiveUI.Fody" Version="18.2.5" />
     <PackageReference Include="ReactiveUI.WPF" Version="18.2.5" />
     <PackageReference Include="WPF-UI" Version="2.0.1" />
   </ItemGroup>
