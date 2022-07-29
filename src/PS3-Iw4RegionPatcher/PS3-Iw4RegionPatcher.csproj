@@ -11,6 +11,8 @@
     <PackageIcon>icon-32x32.png</PackageIcon>
     <RepositoryUrl>https://github.com/coreizer/PS3-Iw4RegionPatcher</RepositoryUrl>
     <NeutralLanguage>ja-JP</NeutralLanguage>
+    <IsPublishable>True</IsPublishable>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,6 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Include="..\icon-32x32.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
