@@ -33,7 +33,7 @@
 
          <StackPanel Grid.Row="0" Orientation="Vertical">
             <TextBlock Margin="2,0,0,8" Text="Region ID" />
-            <ComboBox SelectedValue="{Binding SelectedItem, Mode=OneWayToSource}" SelectedValuePath="Content">
+            <ComboBox SelectedIndex="0" SelectedValue="{Binding SelectedItem, Mode=OneWayToSource}" SelectedValuePath="Content">
                <ComboBoxItem Content="BLUS30377" />
                <ComboBoxItem Content="BLES00687" />
                <ComboBoxItem Content="BLES00686" />

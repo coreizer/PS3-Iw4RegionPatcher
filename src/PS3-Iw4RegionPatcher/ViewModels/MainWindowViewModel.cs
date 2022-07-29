@@ -24,7 +24,6 @@ namespace PS3_Iw4RegionPatcher.ViewModels
    using System;
    using System.IO;
    using System.Threading.Tasks;
-   using System.Windows;
    using System.Windows.Input;
    using Microsoft.Win32;
    using ReactiveUI;
@@ -56,7 +55,7 @@ namespace PS3_Iw4RegionPatcher.ViewModels
          }
       }
 
-      private string _selectedItem;
+      private string _selectedItem = "BLUS30377";
       public string SelectedItem
       {
          get {
