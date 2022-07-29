@@ -23,4 +23,4 @@ jobs:
       uses: NuGet/setup-nuget@v1.0.6
       
     - name: restore nuget packages
-    - run: nuget restore PS3-Iw4RegionPatcher.sln
+      run: nuget restore PS3-Iw4RegionPatcher.sln
