@@ -12,4 +12,4 @@
 coreizer
 
 ### License
-[GPL v3 licensed.](./LICENSE.txt)
+[GPL v3 licensed.](./LICENSE)
