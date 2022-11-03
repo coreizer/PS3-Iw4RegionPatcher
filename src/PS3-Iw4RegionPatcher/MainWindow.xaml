@@ -92,8 +92,7 @@
             </StackPanel>
          </Grid>
       </ui:Dialog>
-
-
+      
       <ui:TitleBar
          Title="PS3 - Iw4(1.11) Region Patcher"
          Grid.Row="0"

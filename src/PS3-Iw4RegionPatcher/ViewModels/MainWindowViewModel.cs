@@ -31,50 +31,35 @@ namespace PS3_Iw4RegionPatcher.ViewModels
    public class MainWindowViewModel : ReactiveObject
    {
       public ICommand OpenFileCommand { get; set; }
+
       public ICommand ApplyCommand { get; set; }
 
       private string _filePath;
       public string FilePath
       {
-         get {
-            return this._filePath;
-         }
-         set {
-            this.RaiseAndSetIfChanged(ref this._filePath, value);
-         }
+         get { return this._filePath; }
+         set { this.RaiseAndSetIfChanged(ref this._filePath, value); }
       }
 
       private string _dialogMessage;
       public string DialogMessage
       {
-         get {
-            return this._dialogMessage;
-         }
-         set {
-            this.RaiseAndSetIfChanged(ref this._dialogMessage, value);
-         }
+         get { return this._dialogMessage; }
+         set { this.RaiseAndSetIfChanged(ref this._dialogMessage, value); }
       }
 
       private string _selectedItem = "BLUS30377";
       public string SelectedItem
       {
-         get {
-            return this._selectedItem;
-         }
-         set {
-            this.RaiseAndSetIfChanged(ref this._selectedItem, value);
-         }
+         get { return this._selectedItem; }
+         set { this.RaiseAndSetIfChanged(ref this._selectedItem, value); }
       }
 
       private bool _isActivated;
       public bool IsActivated
       {
-         get {
-            return this._isActivated;
-         }
-         private set {
-            this.RaiseAndSetIfChanged(ref this._isActivated, value);
-         }
+         get { return this._isActivated; }
+         private set { this.RaiseAndSetIfChanged(ref this._isActivated, value); }
       }
 
       public MainWindowViewModel()
