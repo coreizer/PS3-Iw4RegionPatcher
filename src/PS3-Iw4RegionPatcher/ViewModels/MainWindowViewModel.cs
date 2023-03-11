@@ -37,45 +37,45 @@ namespace PS3_Iw4RegionPatcher.ViewModels
       private string _filePath;
       public string FilePath
       {
-         get { return this._filePath; }
-         set { this.RaiseAndSetIfChanged(ref this._filePath, value); }
+         get => this._filePath;
+         set => this.RaiseAndSetIfChanged(ref this._filePath, value);
       }
 
       private string _dialogMessage;
       public string DialogMessage
       {
-         get { return this._dialogMessage; }
-         set { this.RaiseAndSetIfChanged(ref this._dialogMessage, value); }
+         get => this._dialogMessage;
+         set => this.RaiseAndSetIfChanged(ref this._dialogMessage, value);
       }
 
       private string _selectedItem = "BLUS30377";
       public string SelectedItem
       {
-         get { return this._selectedItem; }
-         set { this.RaiseAndSetIfChanged(ref this._selectedItem, value); }
+         get => this._selectedItem;
+         set => this.RaiseAndSetIfChanged(ref this._selectedItem, value);
       }
 
       private bool _isActivated;
       public bool IsActivated
       {
-         get { return this._isActivated; }
-         private set { this.RaiseAndSetIfChanged(ref this._isActivated, value); }
+         get => this._isActivated;
+         private set => this.RaiseAndSetIfChanged(ref this._isActivated, value);
       }
 
       public MainWindowViewModel()
       {
-         this.OpenFileCommand = ReactiveCommand.CreateFromTask(this.OnOpenFile);
+         this.OpenFileCommand = ReactiveCommand.Create(this.OnOpenFile);
          this.ApplyCommand = ReactiveCommand.CreateFromTask(this.RegionPatcher);
       }
 
-      private async Task OnOpenFile()
+      private void OnOpenFile()
       {
          try {
             if (string.IsNullOrWhiteSpace(this.SelectedItem)) {
                throw new InvalidOperationException("No 'Region Code' selected.");
             }
 
-            OpenFileDialog OFD = new OpenFileDialog();
+            var OFD = new OpenFileDialog();
             OFD.Filter = "Fast File (*.ff)|*.ff";
             OFD.FileName = "patch_mp.ff";
             OFD.Multiselect = false;
@@ -93,15 +93,15 @@ namespace PS3_Iw4RegionPatcher.ViewModels
       private async Task RegionPatcher()
       {
          try {
-            using (FileStream fileStream = new FileStream(this.FilePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None)) {
+            using (var fileStream = new FileStream(this.FilePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None)) {
                fileStream.Position = 0x18;
-               fileStream.WriteByte(this.GetRegionByte(this.SelectedItem));
+               fileStream.WriteByte(GetRegionByte(this.SelectedItem));
                await fileStream.FlushAsync();
             }
 
             this.DialogMessage = "has been successfully applied.";
          }
-         catch(Exception ex) {
+         catch (Exception ex) {
             this.DialogMessage = ex.Message;
          }
          finally {
@@ -109,28 +109,16 @@ namespace PS3_Iw4RegionPatcher.ViewModels
          }
       }
 
-      private byte GetRegionByte(string regionCode)
+      private static byte GetRegionByte(string regionCode)
       {
-         switch (regionCode) {
-            case "BLES00683":
-            case "BLUS30377":
-               return 0x01;
-
-            case "BLES00687":
-               return 0x10;
-
-            case "BLES00686":
-               return 0x04;
-
-            case "BLES00685":
-               return 0x08;
-
-            case "BLES00684":
-               return 0x02;
-         }
-
-         // Default Region
-         return 0x01;
+         return regionCode switch {
+            "BLES00683" or "BLUS30377" => 0x01,
+            "BLES00687" => 0x10,
+            "BLES00686" => 0x04,
+            "BLES00685" => 0x08,
+            "BLES00684" => 0x02,
+            _ => 0x01
+         }; ;
       }
    }
 }

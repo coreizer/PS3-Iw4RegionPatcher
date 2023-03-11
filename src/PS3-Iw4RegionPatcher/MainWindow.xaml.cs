@@ -33,7 +33,7 @@ namespace PS3_Iw4RegionPatcher
 
       public MainWindow()
       {
-         InitializeComponent();
+         this.InitializeComponent();
 
          OwnerDialog = this.MainDialog;
 
