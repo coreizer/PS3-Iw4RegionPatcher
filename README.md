@@ -3,7 +3,7 @@
 <div align="center">
   <h3 align="center">PS3 Iw4RegionPatcher</h3>
 
-PS3 版 Call of Duty: Modern Warfare 2 用の.ff ファイルの地域変更ツール
+PS3 版 Call of Duty: Modern Warfare 2 用.ff ファイルの地域変更ツール
 
   <p align="center">
     <a href="https://github.com/coreizer/PS3-Iw4RegionPatcher/issues">バグ報告</a>
