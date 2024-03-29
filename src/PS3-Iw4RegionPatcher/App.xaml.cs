@@ -19,18 +19,15 @@
 
 #endregion
 
-namespace PS3_Iw4RegionPatcher
-{
-   using System.Windows;
+using System.Windows;
 
-   /// <summary>
-   /// Interaction logic for App.xaml
-   /// </summary>
-   public partial class App : Application
-   {
-      protected override void OnStartup(StartupEventArgs e)
-      {
-         base.OnStartup(e);
-      }
-   }
+namespace PS3_Iw4RegionPatcher {
+  /// <summary>
+  /// Interaction logic for App.xaml
+  /// </summary>
+  public partial class App : Application {
+    protected override void OnStartup(StartupEventArgs e) {
+      base.OnStartup(e);
+    }
+  }
 }

@@ -19,106 +19,85 @@
 
 #endregion
 
-namespace PS3_Iw4RegionPatcher.ViewModels
-{
-   using System;
-   using System.IO;
-   using System.Threading.Tasks;
-   using System.Windows.Input;
-   using Microsoft.Win32;
-   using ReactiveUI;
+using System;
+using System.IO;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+using Microsoft.Win32;
+using ReactiveUI;
+using Wpf.Ui.Controls;
 
-   public class MainWindowViewModel : ReactiveObject
-   {
-      public ICommand OpenFileCommand { get; set; }
+namespace PS3_Iw4RegionPatcher.ViewModels {
+  public class MainWindowViewModel : ReactiveObject {
+    public ICommand OpenFileCommand { get; set; }
 
-      public ICommand ApplyCommand { get; set; }
+    public ICommand RegionCommand { get; set; }
 
-      private string _filePath;
-      public string FilePath
-      {
-         get => this._filePath;
-         set => this.RaiseAndSetIfChanged(ref this._filePath, value);
+    private string _filePath;
+    public string FilePath {
+      get => this._filePath;
+      set => this.RaiseAndSetIfChanged(ref this._filePath, value);
+    }
+
+    private string _selectedItem = "BLUS30377";
+    public string SelectedItem {
+      get => this._selectedItem;
+      set => this.RaiseAndSetIfChanged(ref this._selectedItem, value);
+    }
+
+    private bool _isActivated;
+    public bool IsActivated {
+      get => this._isActivated;
+      private set => this.RaiseAndSetIfChanged(ref this._isActivated, value);
+    }
+
+    public MainWindowViewModel() {
+      this.OpenFileCommand = ReactiveCommand.Create(this.OnOpenFile);
+      this.RegionCommand = ReactiveCommand.CreateFromTask(this.OnRegion);
+    }
+
+    private async void OnOpenFile() {
+      try {
+        ArgumentNullException.ThrowIfNull(this.SelectedItem);
+
+        var OFD = new OpenFileDialog {
+          Filter = "Fast File (*.ff)|*.ff",
+          FileName = "patch_mp.ff",
+          Multiselect = false
+        };
+
+        if (OFD.ShowDialog() == true) {
+          this.FilePath = OFD.FileName;
+          this.IsActivated = true;
+        }
       }
-
-      private string _dialogMessage;
-      public string DialogMessage
-      {
-         get => this._dialogMessage;
-         set => this.RaiseAndSetIfChanged(ref this._dialogMessage, value);
+      catch (Exception ex) {
+        await new Wpf.Ui.Controls.MessageBox { Title = "Error", CloseButtonAppearance = ControlAppearance.Danger, Content = ex.Message }.ShowDialogAsync();
       }
+    }
 
-      private string _selectedItem = "BLUS30377";
-      public string SelectedItem
-      {
-         get => this._selectedItem;
-         set => this.RaiseAndSetIfChanged(ref this._selectedItem, value);
+    private async Task OnRegion() {
+      try {
+        using var fs = new FileStream(this.FilePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+        fs.Position = 0x18;
+        fs.WriteByte(GetRegionByte(this.SelectedItem));
+        await fs.FlushAsync(); // 書き込み
+        await new Wpf.Ui.Controls.MessageBox { Title = "Successfully", CloseButtonAppearance = ControlAppearance.Info, Content = $"Region: {this.SelectedItem}" }.ShowDialogAsync();
       }
-
-      private bool _isActivated;
-      public bool IsActivated
-      {
-         get => this._isActivated;
-         private set => this.RaiseAndSetIfChanged(ref this._isActivated, value);
+      catch (Exception ex) {
+        await new Wpf.Ui.Controls.MessageBox { Title = "Error", CloseButtonAppearance = ControlAppearance.Danger, Content = ex.Message }.ShowDialogAsync();
       }
+    }
 
-      public MainWindowViewModel()
-      {
-         this.OpenFileCommand = ReactiveCommand.Create(this.OnOpenFile);
-         this.ApplyCommand = ReactiveCommand.CreateFromTask(this.RegionPatcher);
-      }
-
-      private void OnOpenFile()
-      {
-         try {
-            if (string.IsNullOrWhiteSpace(this.SelectedItem)) {
-               throw new InvalidOperationException("No 'Region Code' selected.");
-            }
-
-            var OFD = new OpenFileDialog();
-            OFD.Filter = "Fast File (*.ff)|*.ff";
-            OFD.FileName = "patch_mp.ff";
-            OFD.Multiselect = false;
-            if ((bool)OFD.ShowDialog()) {
-               this.FilePath = OFD.FileName;
-               this.IsActivated = true;
-            }
-         }
-         catch (Exception ex) {
-            this.DialogMessage = ex.Message;
-            MainWindow.OwnerDialog.Show();
-         }
-      }
-
-      private async Task RegionPatcher()
-      {
-         try {
-            using (var fileStream = new FileStream(this.FilePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None)) {
-               fileStream.Position = 0x18;
-               fileStream.WriteByte(GetRegionByte(this.SelectedItem));
-               await fileStream.FlushAsync();
-            }
-
-            this.DialogMessage = "has been successfully applied.";
-         }
-         catch (Exception ex) {
-            this.DialogMessage = ex.Message;
-         }
-         finally {
-            MainWindow.OwnerDialog.Show();
-         }
-      }
-
-      private static byte GetRegionByte(string regionCode)
-      {
-         return regionCode switch {
-            "BLES00683" or "BLUS30377" => 0x01,
-            "BLES00687" => 0x10,
-            "BLES00686" => 0x04,
-            "BLES00685" => 0x08,
-            "BLES00684" => 0x02,
-            _ => 0x01
-         }; ;
-      }
-   }
+    private static byte GetRegionByte(string regionCode) =>
+      regionCode switch {
+        "BLES00683" or "BLUS30377" => 0x01,
+        "BLES00687" => 0x10,
+        "BLES00686" => 0x04,
+        "BLES00685" => 0x08,
+        "BLES00684" => 0x02,
+        _ => 0x01
+      };
+  }
 }

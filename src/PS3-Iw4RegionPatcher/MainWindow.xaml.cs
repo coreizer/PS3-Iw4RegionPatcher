@@ -19,31 +19,17 @@
 
 #endregion
 
-namespace PS3_Iw4RegionPatcher
-{
-   using System.Windows;
-   using PS3_Iw4RegionPatcher.ViewModels;
+using PS3_Iw4RegionPatcher.ViewModels;
 
-   /// <summary>
-   /// Interaction logic for MainWindow.xaml
-   /// </summary>
-   public partial class MainWindow
-   {
-      public static Wpf.Ui.Controls.Dialog OwnerDialog { get; private set; }
+namespace PS3_Iw4RegionPatcher {
+  /// <summary>
+  /// Interaction logic for MainWindow.xaml
+  /// </summary>
+  public partial class MainWindow {
+    public MainWindow() {
+      this.InitializeComponent();
 
-      public MainWindow()
-      {
-         this.InitializeComponent();
-
-         OwnerDialog = this.MainDialog;
-
-         this.DataContext = new MainWindowViewModel();
-         Wpf.Ui.Appearance.Background.Apply(this, Wpf.Ui.Appearance.BackgroundType.Mica);
-      }
-
-      private void MainDialog_ButtonRightClick(object sender, RoutedEventArgs e)
-      {
-         (sender as Wpf.Ui.Controls.Dialog).Hide();
-      }
-   }
+      this.DataContext = new MainWindowViewModel();
+    }
+  }
 }
